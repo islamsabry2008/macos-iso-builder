@@ -1,4 +1,4 @@
-name: Build macOS 10.8 Mountain Lion
+name: 15. Build macOS 10.8 Mountain Lion
 
 on:
   workflow_dispatch:

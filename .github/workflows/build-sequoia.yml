@@ -1,4 +1,4 @@
-name: Build macOS 15 Sequoia
+name: 03. Build macOS 15 Sequoia
 
 on:
   workflow_dispatch:

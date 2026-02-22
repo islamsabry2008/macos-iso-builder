@@ -1,4 +1,4 @@
-name: Build macOS 11 Big Sur
+name: 07. Build macOS 11 Big Sur
 
 on:
   workflow_dispatch:

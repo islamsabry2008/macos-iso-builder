@@ -1,4 +1,4 @@
-name: Build macOS 13 Ventura
+name: 05. Build macOS 13 Ventura
 
 on:
   workflow_dispatch:

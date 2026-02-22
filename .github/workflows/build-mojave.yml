@@ -1,4 +1,4 @@
-name: Build macOS 10.14 Mojave
+name: 09. Build macOS 10.14 Mojave
 
 on:
   workflow_dispatch:

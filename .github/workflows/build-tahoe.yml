@@ -1,4 +1,4 @@
-name: Build macOS 26 Tahoe
+name: 02. Build macOS 26 Tahoe
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build macOS 10.15 Catalina
+name: 08. Build macOS 10.15 Catalina
 
 on:
   workflow_dispatch:

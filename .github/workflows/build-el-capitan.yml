@@ -1,4 +1,4 @@
-name: Build macOS 10.11 El Capitan
+name: 12. Build macOS 10.11 El Capitan
 
 on:
   workflow_dispatch:

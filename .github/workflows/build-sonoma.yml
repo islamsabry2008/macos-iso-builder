@@ -1,4 +1,4 @@
-name: Build macOS 14 Sonoma
+name: 04. Build macOS 14 Sonoma
 
 on:
   workflow_dispatch:

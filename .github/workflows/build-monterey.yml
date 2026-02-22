@@ -1,4 +1,4 @@
-name: Build macOS 12 Monterey
+name: 06. Build macOS 12 Monterey
 
 on:
   workflow_dispatch:

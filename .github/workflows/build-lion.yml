@@ -1,4 +1,4 @@
-name: Build macOS 10.7 Lion
+name: 16. Build macOS 10.7 Lion
 
 on:
   workflow_dispatch:

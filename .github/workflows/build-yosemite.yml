@@ -1,4 +1,4 @@
-name: Build macOS 10.10 Yosemite
+name: 13. Build macOS 10.10 Yosemite
 
 on:
   workflow_dispatch:

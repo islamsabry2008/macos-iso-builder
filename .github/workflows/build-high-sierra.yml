@@ -1,4 +1,4 @@
-name: Build macOS 10.13 High Sierra
+name: 10. Build macOS 10.13 High Sierra
 
 on:
   workflow_dispatch:
