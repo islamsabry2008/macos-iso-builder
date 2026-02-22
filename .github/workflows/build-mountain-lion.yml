@@ -1,28 +1,13 @@
-name: Build Full Installer ISO/DMG image
+name: Build macOS 10.8 Mountain Lion
 
 on:
   workflow_dispatch:
     inputs:
       macos_version:
-        description: 'Select a macOS version to build'
         required: true
         type: choice
         options:
-          - 'Tahoe'
-          - 'Sequoia'
-          - 'Sonoma'
-          - 'Ventura'
-          - 'Monterey'
-          - 'Big Sur'
-          - 'Catalina'
-          - 'Mojave'
-          - 'High Sierra'
-          - 'Sierra'
-          - 'El Capitan'
-          - 'Yosemite'
-          - 'Mavericks'
           - 'Mountain Lion'
-          - 'Lion'
       image_format:
         description: 'Select image format: iso for virtual machines, dmg for flash to USB drive'
         required: true
@@ -50,6 +35,8 @@ jobs:
           echo "RAM: $(top -l 1 | grep PhysMem)"
           echo ""
           echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
+          echo ""
+          echo "Model: $(sysctl -n hw.model)"
 
       - name: Create macOS image
         id: create_image

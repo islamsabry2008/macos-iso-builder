@@ -10,76 +10,83 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # needed to create releases
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Fetch fork data
         id: fetch_forks
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           PAST_15_DAYS=$(date -u -d '15 days ago' +%Y-%m-%dT%H:%M:%SZ)
-          
-          curl -s -H "Accept: application/vnd.github.v3+json" \
+
+          curl --silent --show-error --fail \
+            --retry 5 --retry-delay 2 --retry-max-time 60 --retry-connrefused \
+            --connect-timeout 10 --max-time 30 \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${{ github.repository }}/forks?sort=newest&per_page=100" \
             > forks.json
-          
+
           jq --arg date "$PAST_15_DAYS" \
             '[.[] | select(.created_at > $date) | {
               owner: .owner.login,
               name: .name,
               html_url: .html_url,
-              created_at: .created_at,
-              updated_at: .updated_at
+              created_at: .created_at
             }]' forks.json > recent_forks.json
-          
+
           # Iterate through each fork to get the latest successful run
           echo "[" > runs_data.json
           FIRST=true
-          
+
           while IFS= read -r fork; do
             OWNER=$(echo "$fork" | jq -r '.owner')
             REPO=$(echo "$fork" | jq -r '.name')
             CREATED=$(echo "$fork" | jq -r '.created_at')
-            UPDATED=$(echo "$fork" | jq -r '.updated_at')
-            
-            RUN_INFO=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
+
+            RUN_INFO=$(curl --silent --show-error --fail \
+              --retry 5 --retry-delay 2 --retry-max-time 60 --retry-connrefused \
+              --connect-timeout 10 --max-time 30 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/$OWNER/$REPO/actions/runs?per_page=1&status=success")
-            
-            RUN_TITLE=$(echo "$RUN_INFO" | jq -r '.workflow_runs[0].display_title')
-            RUN_URL=$(echo "$RUN_INFO" | jq -r '.workflow_runs[0].html_url')
-            
+
+            RUN_TITLE=$(echo "$RUN_INFO" | jq -r '.workflow_runs[0].display_title // "N/A"')
+            RUN_URL=$(echo "$RUN_INFO" | jq -r '.workflow_runs[0].html_url // ""')
+            RUN_DATE=$(echo "$RUN_INFO" | jq -r '.workflow_runs[0].run_started_at // "" | if . != "" then .[:10] else "" end')
+
             if [ "$FIRST" = false ]; then echo "," >> runs_data.json; fi
-            
+
             jq -n \
               --arg owner "$OWNER" \
               --arg repo "$REPO" \
               --arg created "$CREATED" \
-              --arg updated "$UPDATED" \
               --arg run_title "$RUN_TITLE" \
               --arg run_url "$RUN_URL" \
-              '{owner: $owner, name: $repo, created_at: $created, updated_at: $updated, run_title: $run_title, run_url: $run_url}' \
+              --arg run_date "$RUN_DATE" \
+              '{owner: $owner, name: $repo, created_at: $created, run_title: $run_title, run_url: $run_url, run_date: $run_date}' \
               >> runs_data.json
-            
+
             FIRST=false
           done < <(jq -c '.[]' recent_forks.json)
-          
+
           echo "]" >> runs_data.json
-      
+
       - name: Generate Forks content
         run: |
           CURRENT_TIME=$(date -u +"%Y-%m-%d %H:%M UTC")
-          
+
           cat > release_notes.md << 'EOF'
           ## How to Use This List
-          
+
           1. Sign in to your GitHub account https://github.com/login
           2. Browse links in the list below to find the image you need
           3. Scroll down to **Artifacts** section to download it
-          
+
           <details>
           <summary>❌ DO NOT EXPAND — contains mass unmarketable truths</summary>
           <details>
@@ -104,35 +111,35 @@ jobs:
           *(do it)*
           </details>
           </details>
-          
+
           ---
-          
+
           ## Recently Active Forks
           
-          | Recent Fork | Latest Build | Created | Last Activity |
-          |-------------|--------------|---------|---------------|
+          | Recent Fork | Latest Build | Build Date | Fork Created |
+          |-------------|--------------|------------|--------------|
           EOF
-          
-          jq -r '.[] | "| [\(.owner)/\(.name)](https://github.com/\(.owner)/\(.name)/actions) | [\(.run_title)](\(.run_url)) | \(.created_at[:10]) | \(.updated_at[:10]) |"' runs_data.json >> release_notes.md
-          
+
+          jq -r '.[] | "| [\(.owner)/\(.name)](https://github.com/\(.owner)/\(.name)/actions) | [\(.run_title)](\(.run_url)) | \(.run_date) | \(.created_at[:10]) |"' runs_data.json >> release_notes.md
+
           cat >> release_notes.md << EOF
-          
+
           ---
-          
+
           * **Last updated:** ${CURRENT_TIME}
-          
+
           * **Auto-updates:** This list refreshes every 6 hours
-          
+
           ---
-          
+
           ### Can't Find What You Need?
-          
+
           If none of the recent forks have the macOS version you need:
           1. [Fork this repository](../../fork)
           2. Follow the [Usage guide](../../#how-to-use) to build your own image
           3. Your fork will appear here for others to benefit from!
           EOF
-      
+
       - name: Update release notes
         env:
           GH_TOKEN: ${{ github.token }}
@@ -141,7 +148,7 @@ jobs:
             gh release delete forks-list -y --cleanup-tag
             sleep 10
           fi
-          
+
           gh release create forks-list \
             --title "Recent Forks List" \
             --notes-file release_notes.md \
