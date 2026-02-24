@@ -9,9 +9,6 @@ This project has two parts:
 ## Before you start
 
 Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-list) first - someone might've already built what you need.
-> [!Important]
-> * Use the **"Build Recovery ISO image"** workflow unless you really need an offline installer.
-> * GitHub-hosted runners are a free public resource — please use them responsibly.
 
 ## About images format
 
@@ -36,6 +33,9 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 > ![How to fork and run workflow](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/how_to_fork_and_run_workflow.gif)
 >
 > </details>
+> [!Important]
+> * Use **"Build Recovery ISO image"** workflow unless you really need an offline installer.
+> * GitHub-hosted runners are a free public resource — please use them responsibly.
 
 1. **[Fork](https://github.com/LongQT-sea/macos-iso-builder/fork)** this repository (requires a GitHub account).
 2. Navigate to the **Actions** tab in your forked repository.
