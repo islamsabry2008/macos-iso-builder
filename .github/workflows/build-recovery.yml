@@ -73,7 +73,7 @@ jobs:
             "Sequoia") KEY="sequoia" ;;
             "Tahoe") KEY="tahoe" ;;
           esac
-          
+
           case $KEY in
             lion1) INFO="Mac-2E6FAB96566FE58C:00000000000F25Y00:Lion:" ;;
             mountain_lion) INFO="Mac-7DF2A3B5E5D671ED:00000000000F65100:Mountain_Lion:" ;;
@@ -91,9 +91,9 @@ jobs:
             sequoia) INFO="Mac-7BA5B2D9E42DDD94:00000000000000000:Sequoia:" ;;
             tahoe) INFO="Mac-CFF7D910A743CAAF:00000000000000000:Tahoe:latest" ;;
           esac
-          
+
           IFS=':' read -r BOARD_ID MODEL VERSION_NAME OS_FLAG <<< "$INFO"
-          
+
           echo "board_id=$BOARD_ID" >> $GITHUB_OUTPUT
           echo "model=$MODEL" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
@@ -122,10 +122,10 @@ jobs:
               RECOVERY_FILE="BaseSystem.dmg"
               ;;
           esac
-          
+
           echo "recovery_file=$RECOVERY_FILE" >> $GITHUB_OUTPUT
           echo "Recovery file will be: $RECOVERY_FILE"
-          
+
           if [ ! -f "com.apple.recovery.boot/$RECOVERY_FILE" ]; then
             echo "Error: Recovery image not found at: com.apple.recovery.boot/$RECOVERY_FILE"
             echo "Available files:"
@@ -141,7 +141,7 @@ jobs:
           ISO_NAME="macOS_${VERSION_NAME}_Recovery"
           ISO_FILE="${GITHUB_WORKSPACE}/${ISO_NAME}.iso"
           RECOVERY_PATH="com.apple.recovery.boot/$RECOVERY_FILE"
-          
+
           case $VERSION_NAME in
             Lion|Mountain_Lion|Mavericks)
               HDIUTIL_OPTS="-hfs -iso -joliet"
@@ -150,13 +150,13 @@ jobs:
               HDIUTIL_OPTS="-hfs -udf"
               ;;
           esac
-          
+
           echo "Creating bootable ISO with options: $HDIUTIL_OPTS"
           echo "Input: $RECOVERY_PATH"
           echo "Output: $ISO_FILE"
-          
+
           sudo hdiutil makehybrid $HDIUTIL_OPTS -default-volume-name "${VERSION_NAME}_Recovery" -o "$ISO_FILE" "$RECOVERY_PATH"
-          
+
           if [ -f "$ISO_FILE" ]; then
             ISO_SIZE=$(du -h "$ISO_FILE" | cut -f1)
             echo "ISO created successfully!"
@@ -229,32 +229,26 @@ jobs:
             echo "---" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "<details>" >> $GITHUB_STEP_SUMMARY
-            echo "<summary>⚠️ Do NOT click this. Seriously.</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "<summary>Nothing interesting here. Move along.</summary>" >> $GITHUB_STEP_SUMMARY
             echo "<details>" >> $GITHUB_STEP_SUMMARY
-            echo "<summary>⚠️ DO NOT CLICK. LAST WARNING.</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "<summary>Told you. Nothing. Please close this.</summary>" >> $GITHUB_STEP_SUMMARY
             echo "<br>" >> $GITHUB_STEP_SUMMARY
+            echo "Fine. You win. Here's your prize.<br>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "You clicked anyway. Typical." >> $GITHUB_STEP_SUMMARY
+            echo "A macOS installer downloaded straight from Apple's own servers.** No torrents. No sketchy repacks. No \"trust me bro\" downloads." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "This workflow just performed mass-scale **forbidden Apple sorcery** that Cupertino pretends doesn't exist." >> $GITHUB_STEP_SUMMARY
+            echo "**Things that did not happen:**" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Downloading from a sketchy mirror" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Accidentally installing a crypto miner" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Spending 3 hours on a dead torrent" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**What you got (for free, like a thief):**" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ A legit macOS installer" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ 3+ hours not wasted on broken torrents" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ Zero shady downloads" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ Something that actually works" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Whatever you do, **DO NOT** [⭐ star this repo](https://github.com/LongQT-sea/macos-iso-builder)." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Anyway. **Do NOT** [⭐ star this repo](https://github.com/LongQT-sea/macos-iso-builder). It would be weird if you did." >> $GITHUB_STEP_SUMMARY
             echo "![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.png)" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Seriously. Don't do it. Don't help other people find this. I'm sure you won't anyway. Nobody ever does." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "*(...unless you're the kind of person who does the opposite of what they're told)*" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "*(...it would also be appreciated, but that's beside the point.)*" >> $GITHUB_STEP_SUMMARY
             echo "</details>" >> $GITHUB_STEP_SUMMARY
             echo "</details>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> [!TIP]" >> $GITHUB_STEP_SUMMARY
-            echo "> Enable [Cloudflare WARP](https://one.one.one.one/) for faster downloads." >> $GITHUB_STEP_SUMMARY
+            echo "> Enable [Cloudflare WARP](https://one.one.one.one/) for faster connection to Azure Blob Storage." >> $GITHUB_STEP_SUMMARY
           fi
