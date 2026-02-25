@@ -224,7 +224,8 @@ jobs:
           elif [ "${{ job.status }}" == "success" ]; then
             echo "## Successfully built **macOS ${{ steps.version_info.outputs.version_name }} Recovery** ISO" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Note: This ISO image is intended for creating macOS virtual machine on Proxmox VE, QEMU, VMware, and VirtualBox." >> $GITHUB_STEP_SUMMARY
+            echo "> [!Important]" >> $GITHUB_STEP_SUMMARY
+            echo "This ISO image is intended for creating macOS virtual machine on Proxmox VE, QEMU, VMware, and VirtualBox." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "---" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
@@ -235,7 +236,7 @@ jobs:
             echo "<br>" >> $GITHUB_STEP_SUMMARY
             echo "Fine. You win. Here's your prize.<br>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "A macOS installer downloaded straight from Apple's own servers.** No torrents. No sketchy repacks. No \"trust me bro\" downloads." >> $GITHUB_STEP_SUMMARY
+            echo "A macOS installer download straight from Apple's own servers. No torrents. No sketchy repacks. No \"trust me bro\" downloads." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Things that did not happen:**" >> $GITHUB_STEP_SUMMARY
             echo "- ❌ Downloading from a sketchy mirror" >> $GITHUB_STEP_SUMMARY

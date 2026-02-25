@@ -80,9 +80,7 @@ jobs:
               echo "## Successfully built $(basename *.dmg.img)" >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
               echo "> [!Important]" >> $GITHUB_STEP_SUMMARY
-              echo '> This DMG image is intended for flashing to USB drive using [Rufus](https://rufus.ie/en/#download) (Windows) or `dd` (Linux).' >> $GITHUB_STEP_SUMMARY
-              echo '> Can also be used with virtual machines (requires conversion to `.vhd` for Hyper-V or `.vmdk` for VMware).' >> $GITHUB_STEP_SUMMARY
-              echo '> For QEMU / Proxmox VE, attach as a raw disk image (ISO format is still recommended for a better experience).' >> $GITHUB_STEP_SUMMARY
+              echo '> This DMG image is intended for flashing to USB drive using [Rufus](https://rufus.ie/en/#download) *(Windows)* or `dd` *(Linux)*.' >> $GITHUB_STEP_SUMMARY
             fi
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "---" >> $GITHUB_STEP_SUMMARY

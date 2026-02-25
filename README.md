@@ -9,16 +9,25 @@ This project has two parts:
 ## Before you start
 
 Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-list) first - someone might've already built what you need.
+> [!Important]
+> * GitHub-hosted runners are a free public resource — please use them responsibly.
 
-## About images format
+## Disk Image Formats
 
-**ISO files** - These work great for VMs (Proxmox, QEMU, VirtualBox, VMware). Just attach them like a virtual DVD. They're hybrid UDF/HFS format, so they'll even mount in Windows if you need to poke around inside.
+| Feature | ISO | DMG |
+|---|---|---|
+| Best for | Virtual Machines | Bootable USB |
+| VM Support | Attach as virtual DVD | Convert with `qemu-img` |
+| Layout | Hybrid UDF/HFS | Raw GPT disk image |
 
-**DMG files** - Raw disk images with GPT partition tables. Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) (Windows), `dd` (Linux), or `asr` (macOS) to make bootable installation media. You can also convert them to VHD/VMDK with `qemu-img` if you want.
+**ISO files** - These work great for VMs (Proxmox, QEMU, VirtualBox, VMware). Just attach them like a virtual DVD. They'll even mount in Windows if you need to poke around inside.
+
+**DMG files** - Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) (Windows), `dd` (Linux), or `asr` (macOS) to make bootable installation media. For VM use, convert them to `.vhd` *(for Hyper-V)* or `.vmdk` *(for VMware)* with `qemu-img`. QEMU can use them as-is.
+> Note: DMG files ship with a `.img` suffix *(e.g. macOS_Sequoia.dmg.img)* so Rufus can find them without switching to "All files" in Explorer.
 
 ## Supported versions
 
-Pretty much everything from Lion (10.7, 2011) through the latest Tahoe (26, 2025). Full list:
+Pretty much everything from OS X Lion (10.7, 2011) through the latest macOS Tahoe (26, 2025). Full list:
 
 Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojave, Catalina, Big Sur, Monterey, Ventura, Sonoma, Sequoia, Tahoe.
 
@@ -34,15 +43,11 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 >
 > </details>
 
-> [!Important]
-> * Use **"Build Recovery ISO image"** workflow unless you really need an offline installer.
-> * GitHub-hosted runners are a free public resource — please use them responsibly.
-
 1. **[Fork](https://github.com/LongQT-sea/macos-iso-builder/fork)** this repository (requires a GitHub account).
 2. Navigate to the **Actions** tab in your forked repository.
 3. Click the green **"I understand my workflows, go ahead and enable them"** button.
 4. Select a workflow from the left sidebar:
-   * **Recovery ISO** - Small recovery image, builds in 2-5 minutes. Good for VMs.
+   * **Recovery ISO** *(recommended)* - Small recovery image, builds in 2-5 minutes. Good for VMs.
    * **Full Installer** - Complete offline installer, 5-18GB, takes 5-60 minutes to build.
 5. Click the **"Run workflow"** button and configure the workflow inputs:
 
@@ -70,7 +75,7 @@ Running `./mkmaciso` without arguments gives you an interactive menu.
 
 ## Tips
 
-For VMs, just attach the ISO as a virtual CD drive. Proxmox users - if you want better performance, look into GPU passthrough. I have another repo ([OpenCore-ISO](https://github.com/LongQT-sea/OpenCore-ISO)) that might help with installation, and one for [Intel iGPU passthrough](https://github.com/LongQT-sea/intel-igpu-passthru) specifically.
+For VMs, just attach the ISO as a virtual CD drive. Proxmox users — if you want better performance, look into GPU passthrough. I have another repo ([OpenCore-ISO](https://github.com/LongQT-sea/OpenCore-ISO)) that might help with installation, and one for [Intel iGPU passthrough](https://github.com/LongQT-sea/intel-igpu-passthru) specifically.
 
 For bootable USB drives, after you flash the DMG there'll be leftover space on the drive. You can use that to create a FAT32 partition for your EFI folder if you need one.
 
