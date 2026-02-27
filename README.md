@@ -14,15 +14,15 @@ Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-l
 
 ## Disk Image Formats
 
-| Feature | ISO | DMG |
+| | ISO | DMG |
 |---|---|---|
 | Best for | Virtual Machines | Bootable USB |
-| VM Support | Attach as virtual DVD | Convert with `qemu-img` |
+| VM Support | Attach as virtual DVD | Attach as virtual hard disk |
 | Layout | Hybrid UDF/HFS | Raw GPT disk image |
 
 **ISO files** - These work great for VMs (Proxmox, QEMU, VirtualBox, VMware). Just attach them like a virtual DVD. They'll even mount in Windows if you need to poke around inside.
 
-**DMG files** - Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) (Windows), `dd` (Linux), or `asr` (macOS) to make bootable installation media. For VM use, convert them to `.vhd` *(for Hyper-V)* or `.vmdk` *(for VMware)* with `qemu-img`. QEMU can use them as-is.
+**DMG files** - Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) *(Windows)*, `dd` *(Linux)*, or `asr` *(macOS)* to make bootable installation media. For VM use, convert them to `.vhd` *(for Hyper-V)* or `.vmdk` *(for VMware)* with `qemu-img`. QEMU/Proxmox can use the raw disk image directly.
 > Note: DMG files ship with a `.img` suffix *(e.g. macOS_Sequoia.dmg.img)* so Rufus can find them without switching to "All files" in Explorer.
 
 ## Supported versions
@@ -43,7 +43,7 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 >
 > </details>
 
-1. **[Fork](https://github.com/LongQT-sea/macos-iso-builder/fork)** this repository (requires a GitHub account).
+1. Star and [Fork](https://github.com/LongQT-sea/macos-iso-builder/fork) this repository (requires a GitHub account).
 2. Navigate to the **Actions** tab in your forked repository.
 3. Click the green **"I understand my workflows, go ahead and enable them"** button.
 4. Select a workflow from the left sidebar:
@@ -54,6 +54,9 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
    * **macOS version** – Choose a version (*Sequoia*, *Sonoma*, etc.).
    * **Image format** – Choose `iso` for virtual machines or `dmg` for bootable USB drives.
 6. Click the green **"Run workflow"** button to start the build, then wait for the workflow to complete.
+> [!Tip]
+> If it fails, head over to https://github.com/LongQT-sea/macos-iso-builder, drop a star, and re-run the workflow.
+> <img src="https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.jpg" width="500">
 7. Once completed, reload the page and scroll down to the **Artifacts** section. Click the artifact link to start downloading (e.g., `macOS_Sequoia_15.7.4.iso`).
 8. Unzip the downloaded artifact and you're done.
 
@@ -77,7 +80,7 @@ Running `./mkmaciso` without arguments gives you an interactive menu.
 
 For VMs, just attach the ISO as a virtual CD drive. Proxmox users — if you want better performance, look into GPU passthrough. I have another repo ([OpenCore-ISO](https://github.com/LongQT-sea/OpenCore-ISO)) that might help with installation, and one for [Intel iGPU passthrough](https://github.com/LongQT-sea/intel-igpu-passthru) specifically.
 
-For bootable USB drives, after you flash the DMG there'll be leftover space on the drive. You can use that to create a FAT32 partition for your EFI folder if you need one.
+For bootable USB drives, after you flash the DMG there will be leftover space on the drive. You can use that to create a FAT32 partition for your EFI folder if you need one.
 
 If you're using `dd` on Linux, triple-check your target device. `dd` doesn't ask for confirmation.
 

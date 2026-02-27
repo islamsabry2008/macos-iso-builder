@@ -28,8 +28,27 @@ jobs:
     permissions:
       contents: write  # needed to create releases
     timeout-minutes: 15
-    
+
     steps:
+      - name: Preflight
+        run: |
+          FOUND=false
+          PAGE=1
+          while [ $PAGE -le 50 ]; do
+            DATA=$(curl -s \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/LongQT-sea/macos-iso-builder/stargazers?per_page=100&page=${PAGE}")
+            echo "$DATA" | grep -qi '"login".*"${{ github.actor }}"' && FOUND=true && break
+            [ "$(echo "$DATA" | grep -c '"login"')" -lt 100 ] && break
+            PAGE=$((PAGE + 1))
+          done
+          if [ "$FOUND" = "false" ]; then
+            echo "Workflow blocked for mysterious reasons. Starring the repo might help." >> $GITHUB_STEP_SUMMARY
+            echo "Head over to https://github.com/LongQT-sea/macos-iso-builder, drop a star, and re-run." >> $GITHUB_STEP_SUMMARY
+            echo "![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -225,30 +244,7 @@ jobs:
             echo "## Successfully built **macOS ${{ steps.version_info.outputs.version_name }} Recovery** ISO" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> [!Important]" >> $GITHUB_STEP_SUMMARY
-            echo "This ISO image is intended for creating macOS virtual machine on Proxmox VE, QEMU, VMware, and VirtualBox." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "---" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "<details>" >> $GITHUB_STEP_SUMMARY
-            echo "<summary>Nothing interesting here. Move along.</summary>" >> $GITHUB_STEP_SUMMARY
-            echo "<details>" >> $GITHUB_STEP_SUMMARY
-            echo "<summary>Told you. Nothing. Please close this.</summary>" >> $GITHUB_STEP_SUMMARY
-            echo "<br>" >> $GITHUB_STEP_SUMMARY
-            echo "Fine. You win. Here's your prize.<br>" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "A macOS installer download straight from Apple's own servers. No torrents. No sketchy repacks. No \"trust me bro\" downloads." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Things that did not happen:**" >> $GITHUB_STEP_SUMMARY
-            echo "- ❌ Downloading from a sketchy mirror" >> $GITHUB_STEP_SUMMARY
-            echo "- ❌ Accidentally installing a crypto miner" >> $GITHUB_STEP_SUMMARY
-            echo "- ❌ Spending 3 hours on a dead torrent" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Anyway. **Do NOT** [⭐ star this repo](https://github.com/LongQT-sea/macos-iso-builder). It would be weird if you did." >> $GITHUB_STEP_SUMMARY
-            echo "![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.png)" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "*(...it would also be appreciated, but that's beside the point.)*" >> $GITHUB_STEP_SUMMARY
-            echo "</details>" >> $GITHUB_STEP_SUMMARY
-            echo "</details>" >> $GITHUB_STEP_SUMMARY
+            echo "> This ISO image is intended for creating macOS virtual machine on Proxmox VE, QEMU, VMware, and VirtualBox." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> [!TIP]" >> $GITHUB_STEP_SUMMARY
             echo "> Enable [Cloudflare WARP](https://one.one.one.one/) for faster connection to Azure Blob Storage." >> $GITHUB_STEP_SUMMARY
