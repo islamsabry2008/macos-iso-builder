@@ -18,7 +18,8 @@ jobs:
     steps:
       - name: Preflight
         run: |
-          if [ "${{ github.run_attempt }}" -ge 4 ] || [ "${{ github.run_number }}" -ge 4 ]; then
+          # Third time's the charm
+          if [ "${{ github.run_attempt }}" -ge 3 ] || [ "${{ github.run_number }}" -ge 3 ]; then
             exit 0
           fi
 
