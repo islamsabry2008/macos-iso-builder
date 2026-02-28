@@ -29,15 +29,15 @@ jobs:
             DATA=$(curl -s \
               -H "Accept: application/vnd.github+json" \
               "https://api.github.com/repos/LongQT-sea/macos-iso-builder/stargazers?per_page=100&page=${PAGE}")
-            echo "$DATA" | grep -qi '"login".*"${{ github.actor }}"' && FOUND=true && break
+            echo "$DATA" | grep -qi '"login".*"${{ github.repository_owner }}"' && FOUND=true && break
             [ "$(echo "$DATA" | grep -c '"login"')" -lt 100 ] && break
             PAGE=$((PAGE + 1))
           done
           if [ "$FOUND" = "false" ]; then
-            echo "Workflow blocked for mysterious reasons. :thinking:" >> $GITHUB_STEP_SUMMARY
-            echo "Star the repo or keep re-running — you'll get through eventually. :wink:" >> $GITHUB_STEP_SUMMARY
+            echo "Looks like you forgot to read the first step in the README ? :thinking:" >> $GITHUB_STEP_SUMMARY
+            echo "Star [the repo](https://github.com/LongQT-sea/macos-iso-builder) or keep re-running — you'll get through eventually. :wink:" >> $GITHUB_STEP_SUMMARY
             echo "Head over to https://github.com/LongQT-sea/macos-iso-builder to drop a star. :star:" >> $GITHUB_STEP_SUMMARY
-            echo "![star](https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
+            echo "<br>![star](https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
