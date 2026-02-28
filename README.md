@@ -8,7 +8,8 @@ This project has two parts:
 
 ## Before you start
 
-Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-list) first - someone might've already built what you need.
+Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-list) first - someone might've already built what you need. If not, see [How to use](#how-to-use) to build your own.
+
 > [!Important]
 > GitHub-hosted runners are a free public resource — please use them responsibly.
 
@@ -39,11 +40,12 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 > <details>
 > <summary>Click here to watch a visual guide (GIF)</summary>
 >
-> ![How to fork and run workflow](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/how_to_fork_and_run_workflow.gif)
+> ![How to fork and run workflow](https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/how_to_fork_and_run_workflow.gif)
 >
 > </details>
 
-1. Star and [Fork](https://github.com/LongQT-sea/macos-iso-builder/fork) this repository (requires a GitHub account).
+1. Star and [Fork](https://github.com/LongQT-sea/macos-iso-builder/fork) this repository (requires a GitHub account).<br>
+   <img src="https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/star_and_fork.jpg" width="500">
 2. Navigate to the **Actions** tab in your forked repository.
 3. Click the green **"I understand my workflows, go ahead and enable them"** button.
 4. Select a workflow from the left sidebar:
