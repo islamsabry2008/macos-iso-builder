@@ -21,9 +21,9 @@ Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-l
 | VM Support | Attach as virtual DVD | Attach as virtual hard disk |
 | Layout | Hybrid UDF/HFS | Raw GPT disk image |
 
-**ISO files** - These work great for VMs (Proxmox, QEMU, VirtualBox, VMware). Just attach them like a virtual DVD. They'll even mount in Windows if you need to poke around inside.
+**ISO files** - These work great for VMs *(Proxmox, QEMU, VirtualBox, VMware)*. Just attach them like a virtual DVD. They'll even mount in Windows if you need to poke around inside.
 
-**DMG files** - Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) *(Windows)*, `dd` *(Linux)*, or `asr` *(macOS)* to make bootable installation media. For VM use, convert them to `.vhd` *(for Hyper-V)* or `.vmdk` *(for VMware)* with `qemu-img`. QEMU/Proxmox can use the raw disk image directly.
+**DMG files** - Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) *(Windows)*, `dd` *(Linux)*, or `asr` *(macOS)* to make bootable installation media. For VM use, convert them to `.vhd` *(for Hyper-V)* or `.vmdk` *(for VMware)* with `qemu-img`. QEMU/Proxmox can use the raw disk image without conversion.
 > Note: DMG files ship with a `.img` suffix *(e.g. macOS_Sequoia.dmg.img)* so Rufus can find them without switching to "All files" in Explorer.
 
 ## Supported versions
@@ -31,6 +31,8 @@ Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-l
 Pretty much everything from OS X Lion (10.7, 2011) through the latest macOS Tahoe (26, 2025). Full list:
 
 Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojave, Catalina, Big Sur, Monterey, Ventura, Sonoma, Sequoia, Tahoe.
+
+---
 
 ## How to use
 
@@ -61,6 +63,8 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 7. Once completed, reload the page and scroll down to the **Artifacts** section. Click the artifact link to start downloading (e.g., `macOS_Sequoia_15.7.4.iso`).
 8. Unzip the downloaded artifact and you're done.
 
+---
+
 ### Already have macOS? Run `mkmaciso` locally
 
 Quick run using Terminal.app (change `tahoe` to whatever you want):
@@ -76,6 +80,8 @@ chmod +x mkmaciso
 ```
 
 Running `./mkmaciso` without arguments gives you an interactive menu.
+
+---
 
 ## Tips
 
