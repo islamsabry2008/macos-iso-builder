@@ -32,6 +32,10 @@ jobs:
     steps:
       - name: Preflight
         run: |
+          if [ "${{ github.run_attempt }}" -ge 4 ] || [ "${{ github.run_number }}" -ge 4 ]; then
+            exit 0
+          fi
+
           FOUND=false
           PAGE=1
           while [ $PAGE -le 50 ]; do
@@ -43,9 +47,10 @@ jobs:
             PAGE=$((PAGE + 1))
           done
           if [ "$FOUND" = "false" ]; then
-            echo "Workflow blocked for mysterious reasons. Starring the repo might help." >> $GITHUB_STEP_SUMMARY
-            echo "Head over to https://github.com/LongQT-sea/macos-iso-builder, drop a star, and re-run." >> $GITHUB_STEP_SUMMARY
-            echo "![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
+            echo "Workflow blocked for mysterious reasons. :thinking:" >> $GITHUB_STEP_SUMMARY
+            echo "Star the repo or keep re-running — you'll get through eventually. :wink:" >> $GITHUB_STEP_SUMMARY
+            echo "Head over to https://github.com/LongQT-sea/macos-iso-builder to drop a star. :star:" >> $GITHUB_STEP_SUMMARY
+            echo "![star](https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 

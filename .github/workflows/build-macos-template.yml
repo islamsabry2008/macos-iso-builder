@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Preflight
         run: |
+          if [ "${{ github.run_attempt }}" -ge 4 ] || [ "${{ github.run_number }}" -ge 4 ]; then
+            exit 0
+          fi
+
           FOUND=false
           PAGE=1
           while [ $PAGE -le 50 ]; do
@@ -29,9 +33,10 @@ jobs:
             PAGE=$((PAGE + 1))
           done
           if [ "$FOUND" = "false" ]; then
-            echo "Workflow blocked for mysterious reasons. Starring the repo might help." >> $GITHUB_STEP_SUMMARY
-            echo "Head over to https://github.com/LongQT-sea/macos-iso-builder, drop a star, and re-run." >> $GITHUB_STEP_SUMMARY
-            echo "![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
+            echo "Workflow blocked for mysterious reasons. :thinking:" >> $GITHUB_STEP_SUMMARY
+            echo "Star the repo or keep re-running — you'll get through eventually. :wink:" >> $GITHUB_STEP_SUMMARY
+            echo "Head over to https://github.com/LongQT-sea/macos-iso-builder to drop a star. :star:" >> $GITHUB_STEP_SUMMARY
+            echo "![star](https://raw.githubusercontent.com/LongQT-sea/macos-iso-builder/main/.github/star.jpg)" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
@@ -53,18 +58,17 @@ jobs:
 
       - name: Create macOS image
         id: create_image
-        continue-on-error: true
         run: |
           if [ "${{ inputs.image_format }}" == "iso" ]; then
-            sudo bash mkmaciso "${{ inputs.macos_version }}" iso
+            sudo bash mkmaciso "${{ inputs.macos_version }}" iso || exit 1
             echo "image_name=$(basename *.iso)" >> $GITHUB_OUTPUT
           else
-            sudo bash mkmaciso "${{ inputs.macos_version }}" dmg
+            sudo bash mkmaciso "${{ inputs.macos_version }}" dmg || exit 1
             echo "image_name=$(basename *.dmg.img)" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload ISO artifact
-        if: inputs.image_format == 'iso' && steps.create_image.outcome == 'success'
+        if: inputs.image_format == 'iso'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.create_image.outputs.image_name }}
@@ -73,7 +77,7 @@ jobs:
           retention-days: 15
 
       - name: Upload DMG artifact
-        if: inputs.image_format == 'dmg' && steps.create_image.outcome == 'success'
+        if: inputs.image_format == 'dmg'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.create_image.outputs.image_name }}
@@ -103,6 +107,5 @@ jobs:
             fi
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> [!TIP]" >> $GITHUB_STEP_SUMMARY
-            echo "> Enable [Cloudflare WARP](https://one.one.one.one/) for faster connection to Azure Blob Storage." >> $GITHUB_STEP_SUMMARY
+            echo "> Enable [Cloudflare WARP](https://one.one.one.one/) for faster download from GitHub artifact." >> $GITHUB_STEP_SUMMARY
           fi
-

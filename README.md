@@ -57,8 +57,7 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
    * **Image format** – Choose `iso` for virtual machines or `dmg` for bootable USB drives.
 6. Click the green **"Run workflow"** button to start the build, then wait for the workflow to complete.
 > [!Tip]
-> If it fails, head over to https://github.com/LongQT-sea/macos-iso-builder, drop a star, and re-run the workflow.
-> <img src="https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.jpg" width="500">
+> If the run fails, just re-run the workflow.
 7. Once completed, reload the page and scroll down to the **Artifacts** section. Click the artifact link to start downloading (e.g., `macOS_Sequoia_15.7.4.iso`).
 8. Unzip the downloaded artifact and you're done.
 
